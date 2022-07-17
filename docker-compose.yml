@@ -1,0 +1,57 @@
+version: '3'
+services:
+
+  postgres:
+    image: postgres
+    container_name: postgres_cont
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
+    restart: always
+
+  web:
+    depends_on:
+      - postgres
+    build: .
+    container_name: web_app_cont
+    env_file:
+      - .env
+    volumes:
+      - ./core:/app/core
+      - static_volume:/app/core/static
+      - media_volume:/app/core/media
+    command: >
+      /bin/bash -c "
+      python3 core/manage.py makemigrations --no-input
+      && python3 core/manage.py migrate --no-input
+      && chmod +x admin_add.sh && ./admin_add.sh
+      && python3 core/manage.py collectstatic --no-input
+      && cd core
+      && gunicorn --bind 0.0.0.0:8000 core.wsgi"
+    ports:
+      - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  
+  nginix:
+    depends_on:
+      - web
+    image: nginx
+    container_name: nginx_cont
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static_volume:/app/core/static
+    ports:
+      - "80:80"
+    restart: always
+
+
+volumes:
+  static_volume:
+  media_volume:
+  postgres_data:

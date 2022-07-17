@@ -1,0 +1,31 @@
+# PROJECT_IGNORE
+local_scripts/
+core/static/
+core/madia/
+.env
+
+# DOCKER_IGNORE
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# NGINX_IGNORE
+/nginx/*
+
+# PYTHON_IGNORE
+*.pyc
+__pycache__/
+venv/
+
+# VSCODE_IGNORE
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+.history/
+*.vsix
+
+# GIT_IGNORE
+.gitignore

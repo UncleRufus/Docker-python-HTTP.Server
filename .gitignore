@@ -1,0 +1,21 @@
+# PYTHON CACHE
+*.pyc
+__pycache__/
+
+# VENV
+env/
+venv/
+
+# VSCODE
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+.history/
+*.vsix
+
+# Other
+core/static/
+core/media/
